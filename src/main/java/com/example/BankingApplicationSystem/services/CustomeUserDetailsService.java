@@ -7,26 +7,24 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
-@Service
-public class CustomUserDetailsService implements UserDetailsService {
+@Component
+public class CustomeUserDetailsService implements UserDetailsService {
 
     @Autowired
     private AccountRepository accountRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Account> accountHolderName = accountRepository.findByAccountHolderName(username);
-        if(accountHolderName.isPresent()){
-            return org.springframework.security.core.userdetails.User.builder()
-                    .username(accountHolderName.get().getAccountHolderName())
-                    .password(accountHolderName.get().getAccountPassword())
-                    .roles("USER") // Assign a default role
+        Account accountHolderName = accountRepository.findByAccountHolderName(username);
+        if(accountHolderName != null){
+           return org.springframework.security.core.userdetails.User.builder()
+                    .username(accountHolderName.getAccountHolderName())
+                    .password(accountHolderName.getAccountPassword())
                     .build();
         }
-        throw new UsernameNotFoundException("User not found with username: " + username);
+        throw new UsernameNotFoundException("user not found with username : " + username);
     }
+
 }

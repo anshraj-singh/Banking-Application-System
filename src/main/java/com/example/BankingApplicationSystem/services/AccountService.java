@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
+
 @Component
 public class AccountService {
 
@@ -19,7 +20,7 @@ public class AccountService {
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public Account saveAccount(Account account){
-        account.setAccountPassword(passwordEncoder.encode(account.getAccountPassword())); // Encrypt password
+        account.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
         return accountRepository.save(account);
     }
 
