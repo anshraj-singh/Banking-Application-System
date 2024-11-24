@@ -3,6 +3,8 @@ package com.example.BankingApplicationSystem.services;
 import com.example.BankingApplicationSystem.entity.Account;
 import com.example.BankingApplicationSystem.repositorys.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,7 +16,10 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
+    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     public Account saveAccount(Account account){
+        account.setAccountPassword(passwordEncoder.encode(account.getAccountPassword())); // Encrypt password
         return accountRepository.save(account);
     }
 

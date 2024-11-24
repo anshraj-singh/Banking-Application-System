@@ -5,6 +5,7 @@ import com.example.BankingApplicationSystem.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +17,9 @@ public class AccountController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     //! get all accounts
     @GetMapping
@@ -29,14 +33,15 @@ public class AccountController {
 
     //! create accounts
     @PostMapping
-    public ResponseEntity<Account> createNewAccount(@RequestBody Account account){
-        try{
+    public ResponseEntity<Account> createNewAccount(@RequestBody Account account) {
+        try {
             accountService.saveAccount(account);
-            return new ResponseEntity<>(account,HttpStatus.CREATED);
-        }catch (Exception e){
+            return new ResponseEntity<>(account, HttpStatus.CREATED);
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
 
     //! get by id
     @GetMapping("id/{myId}")
