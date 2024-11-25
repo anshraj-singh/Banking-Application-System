@@ -7,9 +7,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
 
 @Component
 public class AccountService {
@@ -19,21 +19,21 @@ public class AccountService {
 
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public Account saveAccount(Account account){
+    public Account saveAccount(Account account) {
         account.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
+        account.setCreatedAt(LocalDateTime.now()); // Set the current date and time
         return accountRepository.save(account);
     }
 
-    public List<Account> findAllAccount(){
+    public List<Account> findAllAccount() {
         return accountRepository.findAll();
     }
 
-    public Optional<Account> findByIdAccount(String myId){
+    public Optional<Account> findByIdAccount(String myId) {
         return accountRepository.findById(myId);
     }
 
-    public void deleteByIdAccount(String myId){
+    public void deleteByIdAccount(String myId) {
         accountRepository.deleteById(myId);
     }
-
 }
