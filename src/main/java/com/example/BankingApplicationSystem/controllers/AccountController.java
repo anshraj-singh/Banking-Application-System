@@ -9,7 +9,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/accounts")
@@ -44,50 +43,69 @@ public class AccountController {
     @GetMapping("/me")
     public ResponseEntity<Account> getMyAccount() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String accountHolderName = authentication.getName(); // Get the authenticated user's username
-        Optional<Account> account = Optional.ofNullable(accountService.findByUserName(accountHolderName));
-        if (account.isPresent()) {
-            return new ResponseEntity<>(account.get(), HttpStatus.OK);
+        String accountHolderName = authentication.getName();
+        Account account = accountService.findByUserName(accountHolderName);
+
+        if (account != null) {
+            return new ResponseEntity<>(account, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+
     // Delete account by authenticated user
     @DeleteMapping("/me")
-    public ResponseEntity<Void> deleteMyAccount() {
+    public ResponseEntity<String> deleteMyAccount() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String accountHolderName = authentication.getName();// Get the authenticated user's username
-        Optional<Account> account = Optional.ofNullable(accountService.findByUserName(accountHolderName));
-        if(account.isPresent()){
-            accountService.deleteByIdAccount(account.get().getId());
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);// Successfully deleted
+        String accountHolderName = authentication.getName();
+        Account account = accountService.findByUserName(accountHolderName);
+
+        if (account != null) {
+            accountService.deleteByIdAccount(account.getId());
+            return new ResponseEntity<>("Account deleted successfully", HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Account not found", HttpStatus.NOT_FOUND);
     }
 
     // Update account by authenticated user
     @PutMapping("/me")
-    public ResponseEntity<Account> updateMyAccount(@RequestBody Account updatedAccount) {
+    public ResponseEntity<String> updateMyAccount(@RequestBody Account updatedAccount) {
+        // Retrieve the authenticated user's account holder name
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String accountHolderName = authentication.getName(); // Get the authenticated user's username
+        String accountHolderName = authentication.getName();
+        Account existingAccount = accountService.findByUserName(accountHolderName);
 
-        Account oldAccount = accountService.findByUserName(accountHolderName);
-        if (oldAccount != null) {
-            if (updatedAccount.getAccountHolderName() != null && !updatedAccount.getAccountHolderName().isEmpty()) {
-                oldAccount.setAccountHolderName(updatedAccount.getAccountHolderName());
-            }
-
-            if (updatedAccount.getAccountPassword() != null && !updatedAccount.getAccountPassword().isEmpty()) {
-                oldAccount.setAccountPassword(updatedAccount.getAccountPassword());
-            }
-
-            if (updatedAccount.getBalance() >= 0) {
-                oldAccount.setBalance(updatedAccount.getBalance());
-            }
-
-            accountService.saveAccount(oldAccount);
-            return new ResponseEntity<>(oldAccount, HttpStatus.OK);
+        if (existingAccount == null) {
+            return new ResponseEntity<>("Account not found", HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        // Update fields if they are provided
+        if (updatedAccount.getAccountHolderName() != null && !updatedAccount.getAccountHolderName().isEmpty()) {
+            // Check if the new account holder name already exists (excluding the current user)
+            Account existingAccountWithName = accountService.findByUserName(updatedAccount.getAccountHolderName());
+            if (existingAccountWithName != null && !existingAccountWithName.getId().equals(existingAccount.getId())) {
+                return new ResponseEntity<>("Account holder name already exists", HttpStatus.CONFLICT);
+            }
+            existingAccount.setAccountHolderName(updatedAccount.getAccountHolderName());
+        }
+
+        if (updatedAccount.getAccountPassword() != null && !updatedAccount.getAccountPassword().isEmpty()) {
+            existingAccount.setAccountPassword(
+                    accountService.getPasswordEncoder().encode(updatedAccount.getAccountPassword())
+            );
+        }
+
+        if (updatedAccount.getAccountType() != null && !updatedAccount.getAccountType().isEmpty()) {
+            existingAccount.setAccountType(updatedAccount.getAccountType());
+        }
+
+        if (updatedAccount.getBalance() >= 0) {
+            existingAccount.setBalance(updatedAccount.getBalance());
+        }
+
+        // Save the updated account
+        accountService.saveAccount(existingAccount);
+
+        return new ResponseEntity<>("Account updated successfully", HttpStatus.OK);
     }
 }

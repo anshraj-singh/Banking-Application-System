@@ -2,6 +2,7 @@ package com.example.BankingApplicationSystem.services;
 
 import com.example.BankingApplicationSystem.entity.Account;
 import com.example.BankingApplicationSystem.repositorys.AccountRepository;
+import com.fasterxml.jackson.core.Base64Variant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,5 +40,9 @@ public class AccountService {
 
     public Account findByUserName(String userName){
         return accountRepository.findByAccountHolderName(userName);
+    }
+
+    public PasswordEncoder getPasswordEncoder() {
+        return passwordEncoder;
     }
 }
