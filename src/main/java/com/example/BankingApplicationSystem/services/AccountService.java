@@ -2,7 +2,6 @@ package com.example.BankingApplicationSystem.services;
 
 import com.example.BankingApplicationSystem.entity.Account;
 import com.example.BankingApplicationSystem.repositorys.AccountRepository;
-import com.fasterxml.jackson.core.Base64Variant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -24,13 +24,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/accounts/me").authenticated() // Secure account-related endpoints
+                .antMatchers("/accounts/me", "/accounts/me/**").authenticated() // Secure endpoints
                 .anyRequest().permitAll()
                 .and()
-                .httpBasic(); // Enable Basic Authentication
+                .httpBasic();
 
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // Stateless session for REST APIs
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {  //! hare is work on user and password related authenticate
