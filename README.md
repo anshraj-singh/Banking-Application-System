@@ -109,3 +109,18 @@ A Spring Boot-based banking application that allows users to create accounts, pe
  - **POST** `/accounts/me/withdraw`: Withdraw money from the authenticated user's account.
  - **GET** `/accounts/me/transactions`: View transaction history for the authenticated user's account.
 
+
+## Recent Updates
+
+### Transaction Tracking Enhancement
+- All transactions are now directly linked to user accounts using `@DBRef` in the `Account` entity.
+- Whenever a transaction occurs (deposit/withdrawal), it is saved in the `Transaction` collection and added to the user's account.
+- This ensures that each user's transaction history is accessible via their account.
+
+### Key Files Modified:
+- `Account.java`
+- Added a `List<Transaction>` field annotated with `@DBRef`.
+- `TransactionService.java`
+- Modified `deposit()` and `withdraw()` methods to save and link transactions to the user's account.
+
+
