@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "accountdata")
@@ -21,5 +22,5 @@ public class Account {
     private LocalDateTime createdAt; // New field to store creation date and time
 
     @DBRef
-    private List<Transaction> transactions; // List of transactions for the account
+    private List<Transaction> transactions = new ArrayList<>(); // List of transactions for the account
 }

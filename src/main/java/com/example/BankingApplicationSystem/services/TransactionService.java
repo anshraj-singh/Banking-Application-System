@@ -26,15 +26,22 @@ public class TransactionService {
 
         // Update account balance
         account.setBalance(account.getBalance() + amount);
-        accountRepository.save(account);
 
-        // Create and save transaction
+        // Create transaction
         Transaction transaction = new Transaction();
         transaction.setAccountId(account.getId());
         transaction.setType("DEPOSIT");
         transaction.setAmount(amount);
         transaction.setTransactionDate(LocalDateTime.now());
-        return transactionRepository.save(transaction);
+
+        // Save transaction
+        Transaction savedTransaction = transactionRepository.save(transaction);
+
+        // Add transaction to the account
+        account.getTransactions().add(savedTransaction);
+        accountRepository.save(account);
+
+        return savedTransaction;
     }
 
     public Transaction withdraw(Account account, double amount) {
@@ -48,15 +55,22 @@ public class TransactionService {
 
         // Update account balance
         account.setBalance(account.getBalance() - amount);
-        accountRepository.save(account);
 
-        // Create and save transaction
+        // Create transaction
         Transaction transaction = new Transaction();
         transaction.setAccountId(account.getId());
         transaction.setType("WITHDRAWAL");
         transaction.setAmount(amount);
         transaction.setTransactionDate(LocalDateTime.now());
-        return transactionRepository.save(transaction);
+
+        // Save transaction
+        Transaction savedTransaction = transactionRepository.save(transaction);
+
+        // Add transaction to the account
+        account.getTransactions().add(savedTransaction);
+        accountRepository.save(account);
+
+        return savedTransaction;
     }
 
     public List<Transaction> findTransactionsByAccountId(String accountId) {

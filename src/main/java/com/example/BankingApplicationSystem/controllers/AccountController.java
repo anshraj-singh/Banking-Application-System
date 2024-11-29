@@ -104,10 +104,6 @@ public class AccountController {
             existingAccount.setAccountType(updatedAccount.getAccountType());
         }
 
-        if (updatedAccount.getBalance() >= 0) {
-            existingAccount.setBalance(updatedAccount.getBalance());
-        }
-
         // Save the updated account
         accountService.saveAccount(existingAccount);
 
