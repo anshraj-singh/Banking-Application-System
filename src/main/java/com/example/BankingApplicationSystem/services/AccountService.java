@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +23,7 @@ public class AccountService {
     public Account saveAccount(Account account) {
         account.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
         account.setCreatedAt(LocalDateTime.now()); // Set the current date and time
+        account.setRoles(List.of("USER"));
         return accountRepository.save(account);
     }
 

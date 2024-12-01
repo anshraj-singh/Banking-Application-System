@@ -24,8 +24,8 @@ public class AccountController {
 
     //! get all accounts
     // Get all accounts (for admin or testing purposes, consider restricting this)
-    @GetMapping
-    public ResponseEntity<List<Account>> getAllAccount() {
+    @GetMapping("/admin")
+    public ResponseEntity<List<Account>> getAllAccountsForAdmin() {
         List<Account> allAccount = accountService.findAllAccount();
         if (allAccount != null && !allAccount.isEmpty()) {
             return new ResponseEntity<>(allAccount, HttpStatus.OK);
