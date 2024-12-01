@@ -123,4 +123,14 @@ A Spring Boot-based banking application that allows users to create accounts, pe
 - `TransactionService.java`
 - Modified `deposit()` and `withdraw()` methods to save and link transactions to the user's account.
 
+#### Implement role-based functionality with USER and ADMIN roles
+
+- Added 'role' field to Account entity to differentiate between USER and ADMIN roles.
+- Updated Spring Security configuration for role-based access control (RBAC).
+- Modified CustomeUserDetailsService to include roles in authentication.
+- Secured endpoints with role-based restrictions (USER and ADMIN).
+- Added admin-specific endpoints in AccountController for managing accounts and transactions.
+- Set default role as USER during account creation if not specified.
+- Wrote integration tests for role-based access control on endpoints.
+- Updated project documentation to reflect role-based features.
 
