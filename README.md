@@ -134,3 +134,13 @@ A Spring Boot-based banking application that allows users to create accounts, pe
 - Wrote integration tests for role-based access control on endpoints.
 - Updated project documentation to reflect role-based features.
 
+## Account Transfer Feature
+Description
+The Account Transfer Feature allows users to transfer funds between their accounts securely and efficiently. This feature is designed to provide a seamless user experience, enabling users to manage their finances effectively.
+
+How it Works
+User Authentication: Users must be authenticated to access the account transfer feature.
+Account Selection: Users select the source and destination accounts for the transfer.
+Amount Entry: Users enter the amount to be transferred.
+Transfer Confirmation: Users confirm the transfer details before initiating the transaction.
+Transaction Processing: The system processes the transfer, updating the account balances accordingly.
