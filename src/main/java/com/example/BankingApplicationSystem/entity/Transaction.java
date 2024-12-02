@@ -13,7 +13,7 @@ public class Transaction {
     @Id
     private String id;
     private String accountId; // Reference to the account performing the transaction
-    private String type; // "DEPOSIT" or "WITHDRAWAL"
+    private String type; // "DEPOSIT" or "WITHDRAWAL" , "TRANSFER_IN", "TRANSFER_OUT"
     private double amount;
     private LocalDateTime transactionDate; // Timestamp of the transaction
 }

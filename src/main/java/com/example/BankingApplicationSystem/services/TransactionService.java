@@ -76,4 +76,44 @@ public class TransactionService {
     public List<Transaction> findTransactionsByAccountId(String accountId) {
         return transactionRepository.findByAccountId(accountId);
     }
+
+    //! transfer amount
+    public Transaction transfer(Account senderAccount, String recipientAccountId, double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Transfer amount must be greater than zero.");
+        }
+
+        if (senderAccount.getBalance() < amount) {
+            throw new IllegalArgumentException("Insufficient funds for transfer.");
+        }
+
+        // Find recipient account
+        Account recipientAccount = accountRepository.findById(recipientAccountId)
+                .orElseThrow(() -> new IllegalArgumentException("Recipient account not found."));
+
+        // Update sender's balance
+        senderAccount.setBalance(senderAccount.getBalance() - amount);
+        accountRepository.save(senderAccount);
+
+        // Update recipient's balance
+        recipientAccount.setBalance(recipientAccount.getBalance() + amount);
+        accountRepository.save(recipientAccount);
+
+        // Create transactions for both accounts
+        Transaction senderTransaction = new Transaction();
+        senderTransaction.setAccountId(senderAccount.getId());
+        senderTransaction.setType("TRANSFER_OUT");
+        senderTransaction.setAmount(amount);
+        senderTransaction.setTransactionDate(LocalDateTime.now());
+        transactionRepository.save(senderTransaction);
+
+        Transaction recipientTransaction = new Transaction();
+        recipientTransaction.setAccountId(recipientAccount.getId());
+        recipientTransaction.setType("TRANSFER_IN");
+        recipientTransaction.setAmount(amount);
+        recipientTransaction.setTransactionDate(LocalDateTime.now());
+        transactionRepository.save(recipientTransaction);
+
+        return senderTransaction; // or return recipientTransaction based on your requirement
+    }
 }

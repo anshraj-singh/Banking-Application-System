@@ -158,4 +158,22 @@ public class AccountController {
         List<Transaction> transactions = transactionService.findTransactionsByAccountId(account.getId());
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
+
+    @PostMapping("/me/transfer")
+    public ResponseEntity<String> transfer(@RequestParam String recipientAccountId, @RequestParam double amount) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String accountHolderName = authentication.getName();
+        Account senderAccount = accountService.findByUserName(accountHolderName);
+
+        if (senderAccount == null) {
+            return new ResponseEntity<>("Account not found", HttpStatus.NOT_FOUND);
+        }
+
+        try {
+            Transaction transaction = transactionService.transfer(senderAccount, recipientAccountId, amount);
+            return new ResponseEntity<>("Transfer successful. Transaction ID: " + transaction.getId(), HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }
