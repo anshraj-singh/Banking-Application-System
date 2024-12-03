@@ -144,3 +144,13 @@ Account Selection: Users select the source and destination accounts for the tran
 Amount Entry: Users enter the amount to be transferred.
 Transfer Confirmation: Users confirm the transfer details before initiating the transaction.
 Transaction Processing: The system processes the transfer, updating the account balances accordingly.
+
+## Recent Updates
+
+Added functionality to record transactions for both sender and recipient during money transfers.
+<br>
+Updated TransactionService to ensure that both accounts maintain accurate transaction histories.
+<br>
+Improved error handling for insufficient funds and invalid account transfers.
+
+
