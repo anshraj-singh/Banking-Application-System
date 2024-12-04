@@ -22,17 +22,6 @@ public class AccountController {
     @Autowired
     private TransactionService transactionService;
 
-    //! get all accounts
-    // Get all accounts (for admin or testing purposes, consider restricting this)
-    @GetMapping("/admin")
-    public ResponseEntity<List<Account>> getAllAccountsForAdmin() {
-        List<Account> allAccount = accountService.findAllAccount();
-        if (allAccount != null && !allAccount.isEmpty()) {
-            return new ResponseEntity<>(allAccount, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
     //! create accounts
     @PostMapping
     public ResponseEntity<Account> createNewAccount(@RequestBody Account account) {
