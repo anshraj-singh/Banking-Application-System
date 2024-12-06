@@ -153,4 +153,31 @@ Updated TransactionService to ensure that both accounts maintain accurate transa
 <br>
 Improved error handling for insufficient funds and invalid account transfers.
 
+# User Notifications Feature
+
+## Overview
+The User Notifications feature sends email alerts to users for important events such as successful transactions and low balance alerts. This feature enhances user experience by keeping them informed about their account activities.
+
+## Features
+- **Email Notifications**: Users receive notifications via email for:
+  - Successful deposits
+  - Successful withdrawals
+  - Successful transfers
+  - Low balance alerts
+
+## Implementation
+1. **Database Changes**: The `Account` entity has been updated to include an `email` field for storing user email addresses.
+2. **Email Service**: A new `EmailService` class has been created to handle sending emails using JavaMailSender.
+3. **Transaction Notifications**: The `TransactionService` has been modified to send notifications upon successful transactions.
+
+## Configuration
+Ensure to configure your email settings in `application.properties`:
+## properties - 
+spring.mail.host=smtp.example.com
+spring.mail.port=587
+spring.mail.username=your-email@example.com
+spring.mail.password=your-email-password
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
 

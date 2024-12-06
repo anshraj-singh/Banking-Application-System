@@ -20,6 +20,7 @@ public class Account {
     private String accountType;
     private double balance;
     private LocalDateTime createdAt; // New field to store creation date and time
+    private String email; // New field to store user email
     private List<String> roles; //! USER OR ADMIN
     @DBRef
     private List<Transaction> transactions = new ArrayList<>(); // List of transactions for the account
