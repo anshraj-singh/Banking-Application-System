@@ -20,8 +20,7 @@ public class TransactionService {
     private AccountRepository accountRepository;
 
     @Autowired
-    private EmailService emailService; // Inject EmailService
-
+    private EmailService emailService;
 
     //! deposit money logic service
     public Transaction deposit(Account account, double amount) {
@@ -46,10 +45,13 @@ public class TransactionService {
         account.getTransactions().add(savedTransaction);
         accountRepository.save(account);
 
-
         // Send notification email
-        emailService.sendNotification(account.getEmail(), "Deposit Successful", "You have successfully deposited " + amount + ". Your new balance is " + account.getBalance());
-
+        String subject = "Deposit Successful";
+        String message = "Dear " + account.getAccountHolderName() + ",\n\n" +
+                "You have successfully deposited ₹" + amount + " into your account.\n" +
+                "Your new balance is ₹" + account.getBalance() + ".\n\n" +
+                "Thank you for banking with us!";
+        emailService.sendNotification(account.getEmail(), subject, message);
 
         return savedTransaction;
     }
@@ -82,16 +84,15 @@ public class TransactionService {
         accountRepository.save(account);
 
         // Send notification email
-        emailService.sendNotification(account.getEmail(), "Withdrawal Successful", "You have successfully withdrawn " + amount + ". Your new balance is " + account.getBalance());
-
+        String subject = "Withdrawal Successful";
+        String message = "Dear " + account.getAccountHolderName() + ",\n\n" +
+                "You have successfully withdrawn ₹" + amount + " from your account.\n" +
+                "Your new balance is ₹" + account.getBalance() + ".\n\n" +
+                "Thank you for banking with us!";
+        emailService.sendNotification(account.getEmail(), subject, message);
 
         return savedTransaction;
     }
-    public List<Transaction> findTransactionsByAccountId(String accountId) {
-        return transactionRepository.findByAccountId(accountId);
-    }
-
-
 
     //! transfer amount to another account
     public Transaction transfer(Account senderAccount, String recipientAccountId, double amount) {
@@ -139,15 +140,26 @@ public class TransactionService {
         recipientAccount.getTransactions().add(recipientTransaction);
         accountRepository.save(recipientAccount);
 
+        // Send notification email to sender
+        String senderSubject = "Transfer Successful";
+        String senderMessage = "Dear " + senderAccount.getAccountHolderName() + ",\n\n" +
+                "You have successfully transferred ₹" + amount + " to account ID: " + recipientAccountId + ".\n" +
+                "Your new balance is ₹" + senderAccount.getBalance() + ".\n\n" +
+                "Thank you for banking with us!";
+        emailService.sendNotification(senderAccount.getEmail(), senderSubject, senderMessage);
 
-        /// Send notification to sender
-        emailService.sendNotification(senderAccount.getEmail(), "Transfer Successful", "You have successfully transferred " + amount + " to account " + recipientAccountId + ". Your new balance is " + senderAccount.getBalance());
+        // Send notification email to recipient
+        String recipientSubject = "Transfer Received";
+        String recipientMessage = "Dear " + recipientAccount.getAccountHolderName() + ",\n\n" +
+                "You have received ₹" + amount + " from " + senderAccount.getAccountHolderName() + ".\n" +
+                "Your new balance is ₹" + recipientAccount.getBalance() + ".\n\n" +
+                "Thank you for banking with us!";
+        emailService.sendNotification(recipientAccount.getEmail(), recipientSubject, recipientMessage);
 
-        // Send notification to recipient (assuming you have the recipient's account)
-        Account recipientAccounts = accountRepository.findById(recipientAccountId).orElseThrow(() -> new IllegalArgumentException("Recipient account not found."));
-        emailService.sendNotification(recipientAccount.getEmail(), "Transfer Received", "You have received " + amount + " from account " + senderAccount.getAccountHolderName() + ". Your new balance is " + recipientAccounts.getBalance());
+        return senderTransaction;
+    }
 
-        // Return the sender's transaction or recipient's transaction based on your requirement
-        return senderTransaction; // or return recipientTransaction based on your requirement
+    public List<Transaction> findTransactionsByAccountId(String accountId) {
+        return transactionRepository.findByAccountId(accountId);
     }
 }
