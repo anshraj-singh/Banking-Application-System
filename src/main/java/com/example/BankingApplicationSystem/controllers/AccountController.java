@@ -46,21 +46,6 @@ public class AccountController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-
-    // Delete account by authenticated user
-    @DeleteMapping("/me")
-    public ResponseEntity<String> deleteMyAccount() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String accountHolderName = authentication.getName();
-        Account account = accountService.findByUserName(accountHolderName);
-
-        if (account != null) {
-            accountService.deleteByIdAccount(account.getId());
-            return new ResponseEntity<>("Account deleted successfully", HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>("Account not found", HttpStatus.NOT_FOUND);
-    }
-
     // Update account by authenticated user
     @PutMapping("/me")
     public ResponseEntity<String> updateMyAccount(@RequestBody Account updatedAccount) {
