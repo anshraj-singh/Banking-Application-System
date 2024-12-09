@@ -23,8 +23,15 @@ public class AccountService {
     public Account saveAccount(Account account) {
         account.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
         account.setCreatedAt(LocalDateTime.now()); // Set the current date and time
-        account.setRoles(List.of("USER"));
+        account.setRoles(Arrays.asList("USER"));
         return accountRepository.save(account);
+    }
+
+    public void saveAdmin(Account account) {
+        account.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
+        account.setCreatedAt(LocalDateTime.now()); // Set the current date and time
+        account.setRoles(Arrays.asList("USER","ADMIN"));
+        accountRepository.save(account);
     }
 
     public List<Account> findAllAccount() {
