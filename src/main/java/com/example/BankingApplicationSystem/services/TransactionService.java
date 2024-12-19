@@ -5,6 +5,7 @@ import com.example.BankingApplicationSystem.entity.Transaction;
 import com.example.BankingApplicationSystem.repositorys.AccountRepository;
 import com.example.BankingApplicationSystem.repositorys.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -21,6 +22,9 @@ public class TransactionService {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private NotificationService notificationService;
 
     //! deposit money logic service
     public Transaction deposit(Account account, double amount) {
@@ -52,6 +56,9 @@ public class TransactionService {
                 "Your new balance is ₹" + account.getBalance() + ".\n\n" +
                 "Thank you for banking with us!";
         emailService.sendNotification(account.getEmail(), subject, message);
+
+        // Notify user if necessary
+        notificationService.checkAndNotify(account, amount);
 
         return savedTransaction;
     }
@@ -90,6 +97,9 @@ public class TransactionService {
                 "Your new balance is ₹" + account.getBalance() + ".\n\n" +
                 "Thank you for banking with us!";
         emailService.sendNotification(account.getEmail(), subject, message);
+
+        // Notify user if necessary
+        notificationService.checkAndNotify(account, amount);
 
         return savedTransaction;
     }
@@ -155,6 +165,12 @@ public class TransactionService {
                 "Your new balance is ₹" + recipientAccount.getBalance() + ".\n\n" +
                 "Thank you for banking with us!";
         emailService.sendNotification(recipientAccount.getEmail(), recipientSubject, recipientMessage);
+
+        // Notify sender and recipient if necessary
+        notificationService.checkAndNotify(senderAccount, amount);
+        recipientAccount = accountRepository.findById(recipientAccountId)
+                .orElseThrow(() -> new IllegalArgumentException("Recipient account not found."));
+        notificationService.checkAndNotify(recipientAccount, amount);
 
         return senderTransaction;
     }
