@@ -181,3 +181,50 @@ spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
 
 
+# Banking Application System [UPDATE]
+
+## Overview
+The Banking Application System is a comprehensive platform that allows users to manage their banking activities, including account management, transactions, and notifications.
+
+## Features
+- User registration and authentication
+- Account management (view, update, delete)
+- Transaction management (deposit, withdrawal, transfer)
+- **Account Notifications**: Alerts users about important account activities such as low balances and large transactions.
+
+## Account Notifications
+The Account Notifications feature allows users to receive alerts regarding significant account activities. Users will be notified in the following scenarios:
+
+- **Low Balance Notification**: Users will receive a notification when their account balance falls below a specified threshold (e.g., $100).
+- **Large Transaction Notification**: Users will be alerted when a transaction exceeds a defined amount (e.g., $1,000).
+
+### Key Features
+- Customizable notification settings for account activities.
+- Notifications are stored in the database and can be retrieved via the API.
+- Integration with email services for sending notifications (optional).
+
+### API Endpoint
+- **Get Notifications**
+  - **URL**: `/api/notifications`
+  - **Method**: `GET`
+  - **Query Parameter**: `accountId` (string) - The ID of the account for which notifications are requested.
+  - **Response**: A list of notifications in JSON format.
+
+### Example Request
+```http
+GET /api/notifications?accountId=12345
+
+[
+    {
+        "id": "1",
+        "accountId": "12345",
+        "message": "Your account balance is low: $50",
+        "createdAt": "2024-12-19T10:00:00"
+    },
+    {
+        "id": "2",
+        "accountId": "12345",
+        "message": "A large transaction of $1500 has been made.",
+        "createdAt": "2024-12-19T11:00:00"
+    }
+]
