@@ -228,3 +228,10 @@ GET /api/notifications?accountId=12345
         "createdAt": "2024-12-19T11:00:00"
     }
 ]
+```
+
+## Recent Updates
+
+### Account Creation Confirmation Email
+- Implemented a feature to send a confirmation email to users upon successful account creation.
+- Users receive a welcome email with their account details after registration.

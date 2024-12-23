@@ -18,4 +18,12 @@ public class EmailService {
         message.setText(text);
         emailSender.send(message);
     }
+
+    public void sendConfirmationEmail(String toEmail, String confirmationLink) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(toEmail);
+        message.setSubject("Account Confirmation");
+        message.setText("Please confirm your account by clicking the link: " + confirmationLink);
+        emailSender.send(message);
+    }
 }

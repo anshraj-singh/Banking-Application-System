@@ -18,13 +18,33 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
+    private EmailService emailService;
+
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public Account saveAccount(Account account) {
         account.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
         account.setCreatedAt(LocalDateTime.now()); // Set the current date and time
         account.setRoles(Arrays.asList("USER"));
-        return accountRepository.save(account);
+
+        // Save the account to the database
+        Account savedAccount = accountRepository.save(account);
+
+        // Send confirmation email
+        String subject = "Welcome to Our Banking Application!";
+        String message = "Dear " + savedAccount.getAccountHolderName() + ",\n\n" +
+                "Thank you for creating an account with us! Your account has been successfully created.\n" +
+                "Your account details are as follows:\n" +
+                "Account ID: " + savedAccount.getId() + "\n" +
+                "Account Type: " + savedAccount.getAccountType() + "\n\n" +
+                "Thank you for choosing our services!\n\n" +
+                "Best Regards,\n" +
+                "The Banking Application Team";
+
+        emailService.sendNotification(savedAccount.getEmail(), subject, message);
+
+        return savedAccount;
     }
 
     public void saveAdmin(Account account) {

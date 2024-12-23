@@ -19,8 +19,8 @@ public class AccountController {
     @PostMapping
     public ResponseEntity<Account> createNewAccount(@RequestBody Account account) {
         try {
-            accountService.saveAccount(account);
-            return new ResponseEntity<>(account, HttpStatus.CREATED);
+            Account savedAccount = accountService.saveAccount(account);
+            return new ResponseEntity<>(savedAccount, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
