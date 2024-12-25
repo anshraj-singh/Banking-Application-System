@@ -26,6 +26,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/accounts/me/**").authenticated() // Secure endpoints
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/feedback/**").authenticated() // Authenticated users can submit/view their feedback
+                .antMatchers("/feedback").hasRole("ADMIN") // Only admin can view all feedback
                 .anyRequest().permitAll()
                 .and()
                 .httpBasic();
