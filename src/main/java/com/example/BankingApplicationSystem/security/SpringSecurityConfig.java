@@ -25,6 +25,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/accounts/me/**").authenticated() // Secure endpoints
+                .antMatchers("/api/statements/me").authenticated() // Allow access to account statements
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/feedback/**").authenticated() // Authenticated users can submit/view their feedback
                 .antMatchers("/feedback").hasRole("ADMIN") // Only admin can view all feedback

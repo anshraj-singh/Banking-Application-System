@@ -178,4 +178,8 @@ public class TransactionService {
     public List<Transaction> findTransactionsByAccountId(String accountId) {
         return transactionRepository.findByAccountId(accountId);
     }
+
+    public List<Transaction> findTransactionsByAccountIdAndDateRange(String accountId, LocalDateTime startDate, LocalDateTime endDate) {
+        return transactionRepository.findByAccountIdAndTransactionDateBetween(accountId, startDate, endDate);
+    }
 }

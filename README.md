@@ -235,3 +235,19 @@ GET /api/notifications?accountId=12345
 ### Account Creation Confirmation Email
 - Implemented a feature to send a confirmation email to users upon successful account creation.
 - Users receive a welcome email with their account details after registration.
+
+## Account Statements Feature
+
+### Overview
+The Account Statements feature allows users to generate and download their account statements for a specified date range in PDF format. This feature enhances user experience by providing a convenient way to access transaction history in a structured format.
+
+### API Endpoint
+- **Endpoint**: `/api/statements/me`
+- **Method**: `GET`
+- **Query Parameters**:
+  - `startDate`: The start date of the date range in `yyyy-MM-dd'T'HH:mm:ss` format (e.g., `2024-12-01T00:00:00`).
+  - `endDate`: The end date of the date range in `yyyy-MM-dd'T'HH:mm:ss` format (e.g., `2024-12-31T23:59:59`).
+
+### Example Request
+```http
+GET http://localhost:8080/api/statements/me?startDate=2024-12-01T00:00:00&endDate=2024-12-31T23:59:59
