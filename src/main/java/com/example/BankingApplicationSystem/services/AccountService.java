@@ -47,6 +47,10 @@ public class AccountService {
         return savedAccount;
     }
 
+    public void saveUpdateAccount(Account account){
+        accountRepository.save(account);
+    }
+
     public void saveAdmin(Account account) {
         account.setAccountPassword(passwordEncoder.encode(account.getAccountPassword()));
         account.setCreatedAt(LocalDateTime.now()); // Set the current date and time
@@ -72,5 +76,9 @@ public class AccountService {
 
     public PasswordEncoder getPasswordEncoder() {
         return passwordEncoder;
+    }
+
+    public Account findByResetToken(String resetToken) {
+        return accountRepository.findByResetToken(resetToken);
     }
 }
