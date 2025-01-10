@@ -251,3 +251,66 @@ The Account Statements feature allows users to generate and download their accou
 ### Example Request
 ```http
 GET http://localhost:8080/api/statements/me?startDate=2024-12-01T00:00:00&endDate=2024-12-31T23:59:59
+```
+
+## Password Reset Functionality
+
+### Overview
+
+The password reset functionality allows users who forget their passwords to securely reset them. This feature includes the following components:
+
+1. **Password Reset Request Endpoint**: Users can request a password reset by providing their account holder name.
+2. **Password Reset Token Generation**: A unique token is generated for the password reset link, which is sent to the user's registered email.
+3. **Email Service Update**: The email service is updated to send the password reset link to the user's email.
+4. **Password Reset Endpoint**: Users can reset their password using the token provided in the email.
+
+### Implementation Steps
+
+1. **Account Class Update**:
+  - Added new fields for password reset:
+    - `private String resetToken;`
+    - `private LocalDateTime resetTokenExpiration;`
+
+2. **Email Service Update**:
+  - Added a method to send password reset emails:
+    ```java
+    public void sendPasswordResetEmail(String toEmail, String resetLink) {
+        // Implementation
+    }
+    ```
+
+3. **Password Reset Controller**:
+  - Created a new controller to handle password reset requests and token validation:
+    ```java
+    @RestController
+    @RequestMapping("/api/password-reset")
+    public class PasswordResetController {
+        // Implementation
+    }
+    ```
+
+4. **Account Service Update**:
+  - Added methods to find an account by reset token and to save the account:
+    ```java
+    public Account findByResetToken(String resetToken) {
+        // Implementation
+    }
+    ```
+
+5. **Account Repository Update**:
+  - Updated the repository to include a method for finding accounts by reset token:
+    ```java
+    Account findByResetToken(String resetToken);
+    ```
+
+### Usage
+
+- **Request Password Reset**:
+  - Endpoint: `POST /api/password-reset/request`
+  - Parameters: `accountHolderName`
+  - Response: A password reset link will be sent to the registered email.
+
+- **Reset Password**:
+  - Endpoint: `POST /api/password-reset/reset`
+  - Parameters: `token`, `newPassword`
+  - Response: The password will be reset successfully if the token is valid.
