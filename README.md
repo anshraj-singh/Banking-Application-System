@@ -314,3 +314,18 @@ The password reset functionality allows users who forget their passwords to secu
   - Endpoint: `POST /api/password-reset/reset`
   - Parameters: `token`, `newPassword`
   - Response: The password will be reset successfully if the token is valid.
+
+### Email Notification
+
+After the password has been successfully updated, the user receives an email notification with the following content:
+
+- **Subject**: Your Password Has Been Updated
+- **Body**:
+```
+      Hello [Username],
+
+      Your password has been successfully updated. Your new password is: [NewPassword]
+
+       If you did not request this change, please contact support.
+
+```
