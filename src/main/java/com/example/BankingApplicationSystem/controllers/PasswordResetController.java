@@ -54,6 +54,15 @@ public class PasswordResetController {
         account.setAccountPassword(accountService.getPasswordEncoder().encode(newPassword));
         accountService.saveUpdateAccount(account);
 
+        // Send email notification after password reset
+        String subject = "Your Password Has Been Updated";
+        String body = "Hello " + account.getAccountHolderName() + ",\n\n" +
+                "Your password has been successfully updated.\n" +
+                "Your new password is: " + newPassword + "\n\n" +
+                "If you did not request this change, please contact support.";
+        emailService.sendNotification(account.getEmail(), subject, body);
+
+
         return new ResponseEntity<>("Password has been reset successfully", HttpStatus.OK);
     }
 }
