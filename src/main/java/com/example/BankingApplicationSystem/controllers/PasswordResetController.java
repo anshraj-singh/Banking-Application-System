@@ -6,6 +6,8 @@ import com.example.BankingApplicationSystem.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -23,7 +25,17 @@ public class PasswordResetController {
 
     // Request password reset
     @PostMapping("/request")
-    public ResponseEntity<String> requestPasswordReset(@RequestParam String accountHolderName) {
+    public ResponseEntity<?> requestPasswordReset() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // Check if the user is authenticated
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return new ResponseEntity<>("User  is not authenticated", HttpStatus.UNAUTHORIZED);
+        }
+
+        // Get the username from the authenticated user
+        String accountHolderName = authentication.getName(); // Assuming the username is stored in the principal
+
         Account account = accountService.findByUserName(accountHolderName);
         if (account == null) {
             return new ResponseEntity<>("Account not found", HttpStatus.NOT_FOUND);
@@ -44,10 +56,26 @@ public class PasswordResetController {
 
     // Reset password
     @PostMapping("/reset")
-    public ResponseEntity<String> resetPassword(@RequestParam String token, @RequestParam String newPassword) {
+    public ResponseEntity<?> resetPassword(@RequestParam String token, @RequestParam String newPassword) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // Check if the user is authenticated
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return new ResponseEntity<>("User  is not authenticated", HttpStatus.UNAUTHORIZED);
+        }
+
+        // Get the username of the authenticated user
+        String authenticatedUsername = authentication.getName();
+
+        // Find the account associated with the reset token
         Account account = accountService.findByResetToken(token);
         if (account == null || account.getResetTokenExpiration().isBefore(LocalDateTime.now())) {
             return new ResponseEntity<>("Invalid or expired token", HttpStatus.BAD_REQUEST);
+        }
+
+        // Check if the authenticated user matches the account holder
+        if (!account.getAccountHolderName().equals(authenticatedUsername)) {
+            return new ResponseEntity<>("You are not authorized to reset this password", HttpStatus.FORBIDDEN);
         }
 
         // Update the password
@@ -61,7 +89,6 @@ public class PasswordResetController {
                 "Your new password is: " + newPassword + "\n\n" +
                 "If you did not request this change, please contact support.";
         emailService.sendNotification(account.getEmail(), subject, body);
-
 
         return new ResponseEntity<>("Password has been reset successfully", HttpStatus.OK);
     }
