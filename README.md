@@ -329,3 +329,11 @@ After the password has been successfully updated, the user receives an email not
        If you did not request this change, please contact support.
 
 ```
+
+## Password Reset Functionality[Update]
+
+To ensure that only authenticated users can reset their passwords, the `PasswordResetController` has been updated to include authentication and authorization checks. The password reset method now verifies if the user is authenticated before allowing them to reset their password.
+
+### Key Changes:
+- Added checks to confirm user authentication.
+- Ensured that only the account holder can reset their password using a valid reset token.
