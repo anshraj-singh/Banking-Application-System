@@ -337,3 +337,14 @@ To ensure that only authenticated users can reset their passwords, the `Password
 ### Key Changes:
 - Added checks to confirm user authentication.
 - Ensured that only the account holder can reset their password using a valid reset token.
+
+## Recent Updates
+
+### Account Types and Interest Rates Feature
+
+- **Feature**: Users can now choose different account types (e.g., savings, checking, fixed deposit) when creating an account.
+- **Implementation**:
+  - Added a new field `accountType` to the `Account` entity to specify the type of account.
+  - Added a new field `interestRate` to the `Account` entity to store the interest rate associated with the account type.
+  - Implemented logic in the `AccountService` to set the default interest rate based on the selected account type during account creation.
+  - Updated the `AccountController` to allow users to specify the account type when creating or updating their accounts.
