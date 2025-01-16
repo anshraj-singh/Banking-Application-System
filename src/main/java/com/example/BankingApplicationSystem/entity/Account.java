@@ -17,8 +17,9 @@ public class Account {
     private String id;
     private String accountHolderName;
     private String accountPassword;
-    private String accountType;
+    private String accountType; // New field for account type (e.g., savings, checking, fixed deposit)
     private double balance;
+    private double interestRate; // New field for interest rate
     private LocalDateTime createdAt; // New field to store creation date and time
     private String email; // New field to store user email
     private List<String> roles; //! USER OR ADMIN

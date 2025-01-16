@@ -28,6 +28,9 @@ public class AccountService {
         account.setCreatedAt(LocalDateTime.now()); // Set the current date and time
         account.setRoles(Arrays.asList("USER"));
 
+        // Set default interest rate based on account type
+        setInterestRate(account);
+
         // Save the account to the database
         Account savedAccount = accountRepository.save(account);
 
@@ -37,7 +40,8 @@ public class AccountService {
                 "Thank you for creating an account with us! Your account has been successfully created.\n" +
                 "Your account details are as follows:\n" +
                 "Account ID: " + savedAccount.getId() + "\n" +
-                "Account Type: " + savedAccount.getAccountType() + "\n\n" +
+                "Account Type: " + savedAccount.getAccountType() + "\n" +
+                "Interest Rate: " + savedAccount.getInterestRate() + "%\n\n" +
                 "Thank you for choosing our services!\n\n" +
                 "Best Regards,\n" +
                 "The Banking Application Team";
@@ -45,6 +49,23 @@ public class AccountService {
         emailService.sendNotification(savedAccount.getEmail(), subject, message);
 
         return savedAccount;
+    }
+
+    public void setInterestRate(Account account) {
+        switch (account.getAccountType().toLowerCase()) {
+            case "savings":
+                account.setInterestRate(4.0); // Example interest rate for savings account
+                break;
+            case "checking":
+                account.setInterestRate(1.0); // Example interest rate for checking account
+                break;
+            case "fixed deposit":
+                account.setInterestRate(6.0); // Example interest rate for fixed deposit
+                break;
+            default:
+                account.setInterestRate(0.0); // Default interest rate
+                break;
+        }
     }
 
     public void saveUpdateAccount(Account account){

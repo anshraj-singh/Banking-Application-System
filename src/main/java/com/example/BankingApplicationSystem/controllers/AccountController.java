@@ -69,10 +69,12 @@ public class AccountController {
 
         if (updatedAccount.getAccountType() != null && !updatedAccount.getAccountType().isEmpty()) {
             existingAccount.setAccountType(updatedAccount.getAccountType());
+            // Update interest rate based on new account type
+            accountService.setInterestRate(existingAccount);
         }
 
         // Save the updated account
-        accountService.saveAccount(existingAccount);
+        accountService.saveUpdateAccount(existingAccount);
 
         return new ResponseEntity<>("Account updated successfully", HttpStatus.OK);
     }
