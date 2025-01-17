@@ -348,3 +348,14 @@ To ensure that only authenticated users can reset their passwords, the `Password
   - Added a new field `interestRate` to the `Account` entity to store the interest rate associated with the account type.
   - Implemented logic in the `AccountService` to set the default interest rate based on the selected account type during account creation.
   - Updated the `AccountController` to allow users to specify the account type when creating or updating their accounts.
+
+## Recent Updates
+
+### Transaction Limits and Alerts Feature
+
+- **Feature**: Users can now set daily, weekly, and monthly transaction limits for their accounts.
+- **Implementation**:
+  - Added fields for `dailyTransactionLimit`, `weeklyTransactionLimit`, and `monthlyTransactionLimit` in the `Account` entity.
+  - Implemented logic in the `TransactionService` to check these limits before processing deposits, withdrawals, or transfers.
+  - Updated the `AccountController` to allow users to set their transaction limits when creating or updating their accounts.
+  - Integrated a notification system to alert users when they are approaching their transaction limits.
