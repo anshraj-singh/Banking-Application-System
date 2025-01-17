@@ -26,6 +26,11 @@ public class Account {
     @DBRef
     private List<Transaction> transactions = new ArrayList<>(); // List of transactions for the account
 
+    //New fields for transaction limits
+    private double dailyTransactionLimit;
+    private double weeklyTransactionLimit;
+    private double monthlyTransactionLimit;
+
     // New fields for password reset
     private String resetToken;
     private LocalDateTime resetTokenExpiration;

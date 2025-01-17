@@ -51,6 +51,18 @@ public class AccountController {
             return new ResponseEntity<>("Account not found", HttpStatus.NOT_FOUND);
         }
 
+        if (updatedAccount.getDailyTransactionLimit() > 0) {
+            existingAccount.setDailyTransactionLimit(updatedAccount.getDailyTransactionLimit());
+        }
+
+        if (updatedAccount.getWeeklyTransactionLimit() > 0) {
+            existingAccount.setWeeklyTransactionLimit(updatedAccount.getWeeklyTransactionLimit());
+        }
+
+        if (updatedAccount.getMonthlyTransactionLimit() > 0) {
+            existingAccount.setMonthlyTransactionLimit(updatedAccount.getMonthlyTransactionLimit());
+        }
+
         // Update fields if they are provided
         if (updatedAccount.getAccountHolderName() != null && !updatedAccount.getAccountHolderName().isEmpty()) {
             // Check if the new account holder name already exists (excluding the current user)

@@ -32,6 +32,11 @@ public class TransactionService {
             throw new IllegalArgumentException("Deposit amount must be greater than zero.");
         }
 
+        // Check daily transaction limit
+        if (amount > account.getDailyTransactionLimit()) {
+            throw new IllegalArgumentException("Deposit amount exceeds daily transaction limit.");
+        }
+
         // Update account balance
         account.setBalance(account.getBalance() + amount);
 
@@ -71,6 +76,11 @@ public class TransactionService {
 
         if (account.getBalance() < amount) {
             throw new IllegalArgumentException("Insufficient funds for withdrawal.");
+        }
+
+        // Check daily transaction limit
+        if (amount > account.getDailyTransactionLimit()) {
+            throw new IllegalArgumentException("Withdrawal amount exceeds daily transaction limit.");
         }
 
         // Update account balance
