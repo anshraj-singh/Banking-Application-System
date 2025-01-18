@@ -34,4 +34,7 @@ public class Account {
     // New fields for password reset
     private String resetToken;
     private LocalDateTime resetTokenExpiration;
+
+    // New fields for account features
+    private String features; // Description of features
 }
