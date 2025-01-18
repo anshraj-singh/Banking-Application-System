@@ -359,3 +359,15 @@ To ensure that only authenticated users can reset their passwords, the `Password
   - Implemented logic in the `TransactionService` to check these limits before processing deposits, withdrawals, or transfers.
   - Updated the `AccountController` to allow users to set their transaction limits when creating or updating their accounts.
   - Integrated a notification system to alert users when they are approaching their transaction limits.
+
+## Account Comparison Tool
+
+The Account Comparison Tool allows users to compare different types of bank accounts available in the system. This feature provides essential information about each account type, including:
+
+- **Account Type**: The name of the account (e.g., Savings, Checking, Fixed Deposit).
+- **Interest Rate**: The interest rate associated with the account type.
+- **Features**: A brief description of the account's features.
+
+### API Endpoint
+
+- **GET** `/account-comparison`: Retrieves a list of available account types along with their interest rates and features.
