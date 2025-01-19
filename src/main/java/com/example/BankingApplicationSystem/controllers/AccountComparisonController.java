@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,27 +18,31 @@ public class AccountComparisonController {
 
     @GetMapping
     public List<Account> getAccountComparison() {
-        List<Account> accountTypes = new ArrayList<>();
+        // Retrieve all accounts from the service
+        List<Account> accounts = accountService.findAllAccount();
 
-        // Example account types with features
-        Account savingsAccount = new Account();
-        savingsAccount.setAccountType("Savings");
-        savingsAccount.setInterestRate(4.0);
-        savingsAccount.setFeatures("Low risk, interest-bearing account, suitable for saving money.");
-        accountTypes.add(savingsAccount);
+        // Populate account details for comparison
+        for (Account account : accounts) {
+            switch (account.getAccountType().toLowerCase()) {
+                case "savings":
+                    account.setInterestRate(4.0);
+                    account.setFeatures("Low risk, interest-bearing account, suitable for saving money.");
+                    break;
+                case "checking":
+                    account.setInterestRate(1.0);
+                    account.setFeatures("Flexible account for daily transactions, usually with no interest.");
+                    break;
+                case "fixed deposit":
+                    account.setInterestRate(6.0);
+                    account.setFeatures("Higher interest rate for funds locked in for a fixed term.");
+                    break;
+                default:
+                    account.setInterestRate(0.0);
+                    account.setFeatures("No specific features available.");
+                    break;
+            }
+        }
 
-        Account checkingAccount = new Account();
-        checkingAccount.setAccountType("Checking");
-        checkingAccount.setInterestRate(1.0);
-        checkingAccount.setFeatures("Flexible account for daily transactions, usually with no interest.");
-        accountTypes.add(checkingAccount);
-
-        Account fixedDepositAccount = new Account();
-        fixedDepositAccount.setAccountType("Fixed Deposit");
-        fixedDepositAccount.setInterestRate(6.0);
-        fixedDepositAccount.setFeatures("Higher interest rate for funds locked in for a fixed term.");
-        accountTypes.add(fixedDepositAccount);
-
-        return accountTypes;
+        return accounts;
     }
 }

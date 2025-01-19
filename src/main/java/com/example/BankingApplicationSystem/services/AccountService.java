@@ -54,21 +54,26 @@ public class AccountService {
     public void setInterestRate(Account account) {
         switch (account.getAccountType().toLowerCase()) {
             case "savings":
-                account.setInterestRate(4.0); // Example interest rate for savings account
+                account.setInterestRate(4.0);
+                account.setFeatures("Low risk, interest-bearing account, suitable for saving money.");
                 break;
             case "checking":
-                account.setInterestRate(1.0); // Example interest rate for checking account
+                account.setInterestRate(1.0);
+                account.setFeatures("Flexible account for daily transactions, usually with no interest.");
                 break;
             case "fixed deposit":
-                account.setInterestRate(6.0); // Example interest rate for fixed deposit
+                account.setInterestRate(6.0);
+                account.setFeatures("Higher interest rate for funds locked in for a fixed term.");
                 break;
             default:
-                account.setInterestRate(0.0); // Default interest rate
+                account.setInterestRate(0.0);
+                account.setFeatures("No specific features available.");
                 break;
         }
     }
 
     public void saveUpdateAccount(Account account){
+        setInterestRate(account);
         accountRepository.save(account);
     }
 

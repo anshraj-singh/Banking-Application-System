@@ -17,16 +17,16 @@ public class Account {
     private String id;
     private String accountHolderName;
     private String accountPassword;
-    private String accountType; // New field for account type (e.g., savings, checking, fixed deposit)
+    private String accountType; // e.g., "Savings", "Checking", "Fixed Deposit"
     private double balance;
-    private double interestRate; // New field for interest rate
-    private LocalDateTime createdAt; // New field to store creation date and time
-    private String email; // New field to store user email
-    private List<String> roles; //! USER OR ADMIN
+    private double interestRate; // Interest rate for the account type
+    private LocalDateTime createdAt; // Creation date and time
+    private String email; // User email
+    private List<String> roles; // USER OR ADMIN
     @DBRef
     private List<Transaction> transactions = new ArrayList<>(); // List of transactions for the account
 
-    //New fields for transaction limits
+    // New fields for transaction limits
     private double dailyTransactionLimit;
     private double weeklyTransactionLimit;
     private double monthlyTransactionLimit;
@@ -35,6 +35,6 @@ public class Account {
     private String resetToken;
     private LocalDateTime resetTokenExpiration;
 
-    // New fields for account features
+    // New field for account features
     private String features; // Description of features
 }
