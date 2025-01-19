@@ -371,3 +371,56 @@ The Account Comparison Tool allows users to compare different types of bank acco
 ### API Endpoint
 
 - **GET** `/account-comparison`: Retrieves a list of available account types along with their interest rates and features.
+
+### Response
+
+The response will return a list of accounts with the following fields:
+
+```json
+[
+    {
+        "id": "string",
+        "accountHolderName": "string",
+        "accountPassword": "string",
+        "accountType": "string",
+        "balance": 0.0,
+        "interestRate": 4.0,
+        "createdAt": "2024-12-09T20:42:35.982",
+        "email": "string",
+        "roles": ["USER", "ADMIN"],
+        "transactions": [],
+        "dailyTransactionLimit": 0.0,
+        "weeklyTransactionLimit": 0.0,
+        "monthlyTransactionLimit": 0.0,
+        "resetToken": "string",
+        "resetTokenExpiration": "string",
+        "features": "string"
+    }
+]
+```
+
+### Example Response
+
+```json
+[
+{
+"id": "67530a6632e56804a39a7351",
+"accountHolderName": "rohan",
+"accountPassword": "$2a$10$Boq0pm7OlFB1NYq/ukge0.C.ch5WvY3OL5ORYOy8kxKVHltI2xUUe",
+"accountType": "Savings",
+"balance": 10.0,
+"interestRate": 4.0,
+"createdAt": "2024-12-09T20:42:35.982",
+"email": "rohan123@gmail.com",
+"roles": ["USER", "ADMIN"],
+"transactions": [],
+"dailyTransactionLimit": 0.0,
+"weeklyTransactionLimit": 0.0,
+"monthlyTransactionLimit": 0.0,
+"resetToken": null,
+"resetTokenExpiration": null,
+"features": "Low risk, interest-bearing account, suitable for saving money."
+}
+]
+```
+
