@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -89,5 +90,26 @@ public class TransactionController {
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    // New endpoint for searching transaction history by date
+    @GetMapping("/search")
+    public ResponseEntity<List<Transaction>> searchTransactionsByDate(
+            @RequestParam String accountId,
+            @RequestParam String startDate,
+            @RequestParam String endDate) {
+
+        // Parse the date strings to LocalDateTime
+        LocalDateTime start = LocalDateTime.parse(startDate);
+        LocalDateTime end = LocalDateTime.parse(endDate);
+
+        // Retrieve transactions for the specified date range
+        List<Transaction> transactions = transactionService.findTransactionsByAccountIdAndDateRange(accountId, start, end);
+
+        if (transactions.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
 }
