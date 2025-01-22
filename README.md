@@ -424,3 +424,44 @@ The response will return a list of accounts with the following fields:
 ]
 ```
 
+## Transaction History Search
+
+### Endpoint
+`GET /Transactions/search`
+
+### Description
+This endpoint allows users to search their transaction history by date range for a specific account. It does not require authentication.
+
+### Query Parameters
+- `accountId` (required): The ID of the account for which to search transactions.
+- `startDate` (required): The start date for the transaction search in ISO-8601 format (e.g., `2023-01-01T00:00:00`).
+- `endDate` (required): The end date for the transaction search in ISO-8601 format (e.g., `2023-01-31T23:59:59`).
+
+### Example Request
+
+```
+GET http://localhost:8080/Transactions/search?accountId=12345&startDate=2023-01-01T00:00:00&endDate=2023-01-31T23:59:59
+```
+```
+#### Successful Response (200 OK)
+```json
+[
+    {
+        "id": "txn1",
+        "accountId": "12345",
+        "type": "DEPOSIT",
+        "amount": 500.00,
+        "transactionDate": "2023-01-05T10:15:30"
+    },
+    {
+        "id": "txn2",
+        "accountId": "12345",
+        "type": "WITHDRAWAL",
+        "amount": 200.00,
+        "transactionDate": "2023-01-15T14:20:00"
+    }
+]
+
+No Content Response (204 No Content)
+HTTP/1.1 204 No Content
+```
