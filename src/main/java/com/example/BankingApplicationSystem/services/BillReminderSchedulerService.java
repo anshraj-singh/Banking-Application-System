@@ -19,7 +19,7 @@ public class BillReminderSchedulerService {
         for (BillPayment bill : pendingReminders) {
             // Logic to send reminder (e.g., email or notification)
             System.out.println("Reminder: Your bill for " + bill.getBillName() + " of amount " + bill.getAmount() + " is due on " + bill.getDueDate());
-            billPaymentService.markReminderAsSent(bill.getId());
+            billPaymentService.markReminderAsSent(bill.getId()); // Mark reminder as sent
         }
     }
 }

@@ -27,6 +27,7 @@ public class BillPaymentService {
         if (bill != null) {
             bill.setReminderSent(true); // Set reminderSent to true
             billPaymentRepository.save(bill); // Save the updated bill
+            System.out.println("Reminder sent for bill: " + bill.getBillName()); // Log for debugging
         }
     }
 
