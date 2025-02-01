@@ -112,4 +112,19 @@ public class TransactionController {
 
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
+
+    // New endpoint for account activity feed
+    @GetMapping("/me/activity-feed")
+    public ResponseEntity<List<Transaction>> getActivityFeed() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String accountHolderName = authentication.getName();
+        Account account = accountService.findByUserName(accountHolderName);
+
+        if (account == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        List<Transaction> transactions = transactionService.findTransactionsByAccountId(account.getId());
+        return new ResponseEntity<>(transactions, HttpStatus.OK);
+    }
 }

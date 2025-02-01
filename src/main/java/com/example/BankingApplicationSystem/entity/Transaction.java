@@ -16,4 +16,6 @@ public class Transaction {
     private String type; // "DEPOSIT" or "WITHDRAWAL" , "TRANSFER_IN", "TRANSFER_OUT"
     private double amount;
     private LocalDateTime transactionDate; // Timestamp of the transaction
+    private String description; // Description of the transaction
+
 }

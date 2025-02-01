@@ -5,7 +5,6 @@ import com.example.BankingApplicationSystem.entity.Transaction;
 import com.example.BankingApplicationSystem.repositorys.AccountRepository;
 import com.example.BankingApplicationSystem.repositorys.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -26,7 +25,7 @@ public class TransactionService {
     @Autowired
     private NotificationService notificationService;
 
-    //! deposit money logic service
+    //! Deposit money logic service
     public Transaction deposit(Account account, double amount) {
         if (amount <= 0) {
             throw new IllegalArgumentException("Deposit amount must be greater than zero.");
@@ -46,6 +45,7 @@ public class TransactionService {
         transaction.setType("DEPOSIT");
         transaction.setAmount(amount);
         transaction.setTransactionDate(LocalDateTime.now());
+        transaction.setDescription("Deposited ₹" + amount); // Add description
 
         // Save transaction
         Transaction savedTransaction = transactionRepository.save(transaction);
@@ -68,7 +68,7 @@ public class TransactionService {
         return savedTransaction;
     }
 
-    //! withdraw money logic service
+    //! Withdraw money logic service
     public Transaction withdraw(Account account, double amount) {
         if (amount <= 0) {
             throw new IllegalArgumentException("Withdrawal amount must be greater than zero.");
@@ -92,6 +92,7 @@ public class TransactionService {
         transaction.setType("WITHDRAWAL");
         transaction.setAmount(amount);
         transaction.setTransactionDate(LocalDateTime.now());
+        transaction.setDescription("Withdrew ₹" + amount); // Add description
 
         // Save transaction
         Transaction savedTransaction = transactionRepository.save(transaction);
@@ -114,7 +115,7 @@ public class TransactionService {
         return savedTransaction;
     }
 
-    //! transfer amount to another account
+    //! Transfer amount to another account
     public Transaction transfer(Account senderAccount, String recipientAccountId, double amount) {
         if (amount <= 0) {
             throw new IllegalArgumentException("Transfer amount must be greater than zero.");
@@ -142,6 +143,7 @@ public class TransactionService {
         senderTransaction.setType("TRANSFER_OUT");
         senderTransaction.setAmount(amount);
         senderTransaction.setTransactionDate(LocalDateTime.now());
+        senderTransaction.setDescription("Transferred ₹" + amount + " to account ID: " + recipientAccountId); // Add description
         transactionRepository.save(senderTransaction);
 
         // Add sender's transaction to sender's account
@@ -154,6 +156,7 @@ public class TransactionService {
         recipientTransaction.setType("TRANSFER_IN");
         recipientTransaction.setAmount(amount);
         recipientTransaction.setTransactionDate(LocalDateTime.now());
+        recipientTransaction.setDescription("Received ₹" + amount + " from account ID: " + senderAccount.getId()); // Add description
         transactionRepository.save(recipientTransaction);
 
         // Add recipient's transaction to recipient's account
@@ -178,8 +181,6 @@ public class TransactionService {
 
         // Notify sender and recipient if necessary
         notificationService.checkAndNotify(senderAccount, amount);
-        recipientAccount = accountRepository.findById(recipientAccountId)
-                .orElseThrow(() -> new IllegalArgumentException("Recipient account not found."));
         notificationService.checkAndNotify(recipientAccount, amount);
 
         return senderTransaction;
