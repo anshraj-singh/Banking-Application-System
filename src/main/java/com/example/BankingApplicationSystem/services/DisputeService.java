@@ -31,7 +31,39 @@ public class DisputeService {
     public Dispute updateDisputeStatus(String disputeId, String status) {
         Dispute dispute = disputeRepository.findById(disputeId)
                 .orElseThrow(() -> new IllegalArgumentException("Dispute not found."));
+
+        // Validate the status before updating
+        if (!isValidStatus(status)) {
+            throw new IllegalArgumentException("Invalid status provided.");
+        }
+
         dispute.setStatus(status);
         return disputeRepository.save(dispute);
+    }
+
+    // Method to automatically resolve disputes based on certain conditions
+    public Dispute resolveDispute(String disputeId) {
+        Dispute dispute = disputeRepository.findById(disputeId)
+                .orElseThrow(() -> new IllegalArgumentException("Dispute not found."));
+
+        // Logic to determine if the dispute can be resolved
+        // For example, if the dispute has been reviewed or a certain time has passed
+        // Here, we simply set it to "RESOLVED" for demonstration purposes
+        dispute.setStatus("RESOLVED");
+        return disputeRepository.save(dispute);
+    }
+
+    // Method to close a dispute
+    public Dispute closeDispute(String disputeId) {
+        Dispute dispute = disputeRepository.findById(disputeId)
+                .orElseThrow(() -> new IllegalArgumentException("Dispute not found."));
+
+        dispute.setStatus("CLOSED");
+        return disputeRepository.save(dispute);
+    }
+
+    // Helper method to validate status
+    private boolean isValidStatus(String status) {
+        return status.equals("PENDING") || status.equals("RESOLVED") || status.equals("CLOSED");
     }
 }

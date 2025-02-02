@@ -65,4 +65,26 @@ public class DisputeController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Dispute not found
         }
     }
+
+    // Resolve a dispute
+    @PutMapping("/{disputeId}/resolve")
+    public ResponseEntity<Dispute> resolveDispute(@PathVariable String disputeId) {
+        try {
+            Dispute resolvedDispute = disputeService.resolveDispute(disputeId);
+            return new ResponseEntity<>(resolvedDispute, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Dispute not found
+        }
+    }
+
+    // Close a dispute
+    @PutMapping("/{disputeId}/close")
+    public ResponseEntity<Dispute> closeDispute(@PathVariable String disputeId) {
+        try {
+            Dispute closedDispute = disputeService.closeDispute(disputeId);
+            return new ResponseEntity<>(closedDispute, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Dispute not found
+        }
+    }
 }
