@@ -49,7 +49,7 @@ public class AccountActivitySummaryService {
             summary.append("No transactions in this period.");
         } else {
             for (Transaction transaction : transactions) {
-                summary.append("Date: ").append(transaction.getTransactionDate())
+                summary.append("Date: ").append(transaction.getTransactionDate)
                         .append(", Amount: ").append(transaction.getAmount())
                         .append(", Description: ").append(transaction.getDescription()).append("\n");
             }
