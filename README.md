@@ -465,3 +465,61 @@ GET http://localhost:8080/Transactions/search?accountId=12345&startDate=2023-01-
 No Content Response (204 No Content)
 HTTP/1.1 204 No Content
 ```
+## Account Activity Summary Feature
+
+The **Account Activity Summary** feature provides users with a weekly or monthly summary of their account activity via email. This feature helps users stay informed about their financial transactions and spending patterns.
+
+### How It Works
+
+1. **Scheduled Task**: A scheduled task runs every week (or month) to generate a summary of account activity for each user.
+2. **Email Notification**: The summary is sent to the user's registered email address, highlighting key transactions and spending patterns.
+
+### Scheduled Task Configuration
+
+The scheduled task is configured to run every Monday at noon. You can adjust the cron expression in the `AccountActivitySummaryService` class to change the frequency.
+
+### Example Email Response
+
+When the scheduled task runs, users will receive an email that looks like this:
+
+**Subject:** Weekly Account Activity Summary
+
+---
+
+**Account Activity Summary for John Doe**  
+**Account ID:** 123456789  
+**Period:** October 1, 2023 to October 7, 2023
+
+---
+
+**Transactions:**
+
+- **Date:** October 2, 2023  
+  **Amount:** -$50.00  
+  **Description:** Grocery Store Purchase
+
+- **Date:** October 3, 2023  
+  **Amount:** -$30.00  
+  **Description:** Coffee Shop
+
+- **Date:** October 5, 2023  
+  **Amount:** +$1,200.00  
+  **Description:** Salary Deposit
+
+- **Date:** October 6, 2023  
+  **Amount:** -$100.00  
+  **Description:** Utility Bill Payment
+
+- **Date:** October 7, 2023  
+  **Amount:** -$20.00  
+  **Description:** Restaurant
+
+---
+
+**Total Transactions This Week:** 5  
+**Total Amount Spent:** -$200.00  
+**Total Amount Deposited:** +$1,200.00
+
+---
+
+Thank you for using our banking services! If you have any questions or need further assistance, please do not hesitate to contact us. 1234 change
